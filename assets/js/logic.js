@@ -6,16 +6,30 @@ var items = [];
 var setHourIndex = 9;
 
 $(".hour").each(function() {
-    var hourText = $(this).text();
-    if (setHourIndex > 12) {
-      setHourIndex = 1;
-    }
-    if (hourText.includes(setHourIndex)) {
-      var check = $(this).parent().children()[1]
-      check.id = ("id", hourText); 
-      console.log(check)
-      setHourIndex++;
-    }
+  var currentTime = (moment().format("H").toString());
+  var hourText = $(this).text();
+  if (setHourIndex > 12) {
+    setHourIndex = 1;
+  }
+  if (hourText.includes(setHourIndex)) {
+    var check = $(this).parent().children()[1]
+    check.id = ("id", hourText);
+    setHourIndex++;
+  }
+  var spanHour = parseInt($(this).find("span").text());
+  if (spanHour < 9) {
+    spanHour = spanHour + 12;
+  }
+  console.log(currentTime - spanHour)
+  if (currentTime - spanHour === 0) {
+    check.classList.add("present");
+  }
+  if (currentTime - spanHour > 0) {
+    check.classList.add("past");
+  }
+  if (currentTime - spanHour < 0) {
+    check.classList.add("future");
+  }
 })
 // var setTime = function() {
   
@@ -27,15 +41,15 @@ $(".hour").each(function() {
   //     textareaEl.setAttribute("id", hourText)
   //     setHourIndex++;
   //   }}
-//     // if (Math.floor(moment().diff(setHour, "hours")) === 0) {
-//     //   textareaEl.classList.add("present");
-//     // }
-//     // else if (Math.floor(moment().diff(setHour, "hours")) > 0) {
-//     //   textareaEl.classList.add("past");
-//     // }
-//     // else if (Math.floor(moment().diff(setHour, "hours")) < 0) {
-//     //   textareaEl.classList.add("future");
-//     // }
+    // if (Math.floor(moment().diff(setHour, "hours")) === 0) {
+    //   textareaEl.classList.add("present");
+    // }
+    // else if (Math.floor(moment().diff(setHour, "hours")) > 0) {
+    //   textareaEl.classList.add("past");
+    // }
+    // else if (Math.floor(moment().diff(setHour, "hours")) < 0) {
+    //   textareaEl.classList.add("future");
+    // }
 //   }
 // }
 
