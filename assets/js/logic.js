@@ -5,98 +5,59 @@ currentDayEl.textContent = todayDate;
 var items = [];
 var setHourIndex = 9;
 
-$(".hour").each(function() {
-  var currentTime = (moment().format("H").toString());
-  var hourText = $(this).text();
-  if (setHourIndex > 12) {
-    setHourIndex = 1;
-  }
-  if (hourText.includes(setHourIndex)) {
-    var check = $(this).parent().children()[1]
-    check.id = ("id", hourText);
-    setHourIndex++;
-  }
-  var spanHour = parseInt($(this).find("span").text());
-  if (spanHour < 9) {
-    spanHour = spanHour + 12;
-  }
-  console.log(currentTime - spanHour)
-  if (currentTime - spanHour === 0) {
-    check.classList.add("present");
-  }
-  if (currentTime - spanHour > 0) {
-    check.classList.add("past");
-  }
-  if (currentTime - spanHour < 0) {
-    check.classList.add("future");
-  }
-})
-// var setTime = function() {
-  
-//   var hourText = rowHour.textContent;
-  // for (var i = 0; i < 9; i++) {
-  //   if (hourText.includes(setHourIndex)) {
-  //     console.log("Hey these match");
-  //     var textareaEl = document.querySelector("textarea")
-  //     textareaEl.setAttribute("id", hourText)
-  //     setHourIndex++;
-  //   }}
-    // if (Math.floor(moment().diff(setHour, "hours")) === 0) {
-    //   textareaEl.classList.add("present");
-    // }
-    // else if (Math.floor(moment().diff(setHour, "hours")) > 0) {
-    //   textareaEl.classList.add("past");
-    // }
-    // else if (Math.floor(moment().diff(setHour, "hours")) < 0) {
-    //   textareaEl.classList.add("future");
-    // }
-//   }
-// }
+var checkTime = function() {
+  $(".hour").each(function() {
+    var currentTime = (moment().format("H").toString());
+    var hourText = $(this).text();
+    if (setHourIndex > 12) {
+      setHourIndex = 1;
+    }
+    if (hourText.includes(setHourIndex)) {
+      var check = $(this).parent().children()[1]
+      check.id = ("id", hourText);
+      setHourIndex++;
+    }
+    var spanHour = parseInt($(this).find("span").text());
+    if (spanHour < 9) {
+      spanHour = spanHour + 12;
+    }
+    if (currentTime - spanHour === 0) {
+      check.classList.add("present");
+    }
+    if (currentTime - spanHour > 0) {
+      check.classList.add("past");
+    }
+    if (currentTime - spanHour < 0) {
+      check.classList.add("future");
+    }
+    loadItems(hourText, check);
+  })
+}
 
-// var loadTasks = function() {
-//   tasks = JSON.parse(localStorage.getItem("tasks"));
-
-//   // if nothing in localStorage, create a new object to track all task status arrays
-//   if (!tasks) {
-//     tasks = {
-//       toDo: [],
-//       inProgress: [],
-//       inReview: [],
-//       done: []
-//     };
-//   }
-
-//   // loop over object properties
-//   $.each(tasks, function(list, arr) {
-//     // then loop over sub-array
-//     arr.forEach(function(task) {
-//       createTask(task.text, task.date, list);
-//     });
-//   });
-// };
-
-var loadItems = function() {
+var loadItems = function(hourText, inputValue) {
   items = JSON.parse(localStorage.getItem("items"));
   if (!items) {
-    items = {
-      nineAM: [],
-      tenAM: [],
-      elevenAM: [],
-      twelevePM: [],
-      onePM: [],
-      twoPM: [],
-      threePM: [],
-      fourPM: [],
-      fivePM: [],
-    }
+    items = [];
     localStorage.setItem("items", JSON.stringify(items));
+  } 
+  else {
   }
-
 }
 
 var changeItems = function(textInput, textId) {
-  console.log(textInput);
-  console.log(textId);
+  itemsNew = {
+    id: textId,
+    text: textInput
+  }
+  for (var i = 0; i < items.length; i++) {
+    if (items[i].id === itemsNew.id) {
+      items[i].text = itemsNew.text
+      localStorage.setItem("items", JSON.stringify(items))
+      return null;
+    }
+  }
+  items.push(itemsNew)
+  localStorage.setItem("items", JSON.stringify(items));
 }
 
 
@@ -108,4 +69,4 @@ $(".row").on("click", ".saveBtn", function(event) {
 })
 
 // setTime();
-loadItems();
+checkTime();
