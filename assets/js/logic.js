@@ -5,24 +5,39 @@ currentDayEl.textContent = todayDate;
 var items = [];
 var setHourIndex = 9;
 
-var setTime = function() {
-  for (var i = 0; i < 9; i++) {
-    var textareaEl = document.querySelector(`#textarea${i}`);
-    var hour = document.querySelector(`#hour${i}`);
-    var setHour = moment().set("hour", setHourIndex);
-    hour.textContent = setHour.format("hA");
-    setHourIndex++;
-    if (Math.floor(moment().diff(setHour, "hours")) === 0) {
-      textareaEl.classList.add("present");
+$(".hour").each(function() {
+    var hourText = $(this).text();
+    if (setHourIndex > 12) {
+      setHourIndex = 1;
     }
-    else if (Math.floor(moment().diff(setHour, "hours")) > 0) {
-      textareaEl.classList.add("past");
+    if (hourText.includes(setHourIndex)) {
+      var check = $(this).parent().children()[1]
+      check.id = ("id", hourText); 
+      console.log(check)
+      setHourIndex++;
     }
-    else if (Math.floor(moment().diff(setHour, "hours")) < 0) {
-      textareaEl.classList.add("future");
-    }
-  }
-}
+})
+// var setTime = function() {
+  
+//   var hourText = rowHour.textContent;
+  // for (var i = 0; i < 9; i++) {
+  //   if (hourText.includes(setHourIndex)) {
+  //     console.log("Hey these match");
+  //     var textareaEl = document.querySelector("textarea")
+  //     textareaEl.setAttribute("id", hourText)
+  //     setHourIndex++;
+  //   }}
+//     // if (Math.floor(moment().diff(setHour, "hours")) === 0) {
+//     //   textareaEl.classList.add("present");
+//     // }
+//     // else if (Math.floor(moment().diff(setHour, "hours")) > 0) {
+//     //   textareaEl.classList.add("past");
+//     // }
+//     // else if (Math.floor(moment().diff(setHour, "hours")) < 0) {
+//     //   textareaEl.classList.add("future");
+//     // }
+//   }
+// }
 
 // var loadTasks = function() {
 //   tasks = JSON.parse(localStorage.getItem("tasks"));
@@ -78,6 +93,5 @@ $(".row").on("click", ".saveBtn", function(event) {
   changeItems(textInput, textId);
 })
 
-setTime();
+// setTime();
 loadItems();
-
