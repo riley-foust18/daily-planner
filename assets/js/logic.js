@@ -41,6 +41,11 @@ var loadItems = function(hourText, inputValue) {
     localStorage.setItem("items", JSON.stringify(items));
   } 
   else {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].id === hourText) {
+        inputValue.value = items[i].text
+      }
+    }
   }
 }
 
